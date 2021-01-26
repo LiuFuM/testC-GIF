@@ -1,0 +1,101 @@
+c#picture可以直接显示gif
+using System;
+using System.Drawing;
+using System.Collections;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing.Imaging;
+namespace WindowsApplication1
+{
+/// <summary>
+/// Form8 的摘要说明。
+/// </summary>
+public class animateImage : System.Windows.Forms.Form
+{
+/// <summary>
+/// 必需的设计器变量。
+/// </summary>
+private System.ComponentModel.Container components = null;
+Bitmap animatedImage = new Bitmap("1.gif");
+bool currentlyAnimating = false;
+public animateImage()
+{
+//
+// Windows 窗体设计器支持bai所必需的
+//
+InitializeComponent();
+//
+// TODO: 在 InitializeComponent 调用后添加任何构造函数代码
+//
+}
+/// <summary>
+/// 清理所有正在使用的资源。
+/// </summary>
+protected override void Dispose( bool disposing )
+{
+if( disposing )
+{
+if(components != null)
+{
+components.Dispose();
+}
+}
+base.Dispose( disposing );
+}
+#region Windows 窗体设计器生成的代码
+/// <summary>
+/// 设计器支持所需的方法 - 不要使用代码编辑器修改
+/// 此方法的内容。
+/// </summary>
+private void InitializeComponent()
+{
+//
+// Form8
+//
+this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
+this.ClientSize = new System.Drawing.Size(536, 438);
+this.Name = "Form8";
+this.Text = "Form8";
+this.Load += new System.EventHandler(this.Form8_Load);
+}
+#endregion
+// [STAThread]
+// static void Main()
+// {
+// Application.Run(new Form2());
+// }
+private void Form8_Load(object sender, System.EventArgs e)
+{
+//This method begins the animation.
+}
+public void AnimateImage()
+{
+if (!currentlyAnimating)
+{
+//Begin the animation only once.
+ImageAnimator.Animate(animatedImage, new EventHandler(this.OnFrameChanged));
+currentlyAnimating = true;
+}
+}
+private void OnFrameChanged(object o, EventArgs e)
+{
+//Force a call to the Paint event handler.
+this.Invalidate();
+}
+protected override void OnPaint(PaintEventArgs e)
+{
+this.SetStyle(ControlStyles.AllPaintingInWmPaint,true);
+this.SetStyle(ControlStyles.DoubleBuffer,true);
+//Begin the animation.
+AnimateImage();
+//Get the next frame ready for rendering.
+ImageAnimator.UpdateFrames();
+//Draw the next frame in the animation.
+e.Graphics.DrawImage(this.animatedImage, new Point(0, 0));
+e.Graphics.DrawString("哈哈",new Font("Tahoma",12),new SolidBrush(Color.Red),10,10);
+}
+// public static void Main()
+// {
+// Application.Run(new animateImage());
+// }
+} ｝
